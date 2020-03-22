@@ -1,9 +1,9 @@
-import _ from 'lodash';
+import _ from 'lodash';//何のクイズを管理しているか、管理データをどのように操作するかのデータの管理
 import he from 'he';
-import QuizFetcher from '../data_fetchers/QuizFetcher';
+import QuizFetcher from '../data_fetchers/QuizFetcher';//データを読み込む用
 
 class Quiz{
-    constructor({question, correctAnswer, incorrectAnswers}){
+    constructor({question, correctAnswer, incorrectAnswers}){//{}はオブジェクトを受け取るという意味{question}→questionプロパティを受け取る
 
         this._question = question;
         this._correctAnswer = correctAnswer;
@@ -30,16 +30,16 @@ class Quiz{
     }
 
     static async fetchAndCreateQuizzes(){//クラスメソッドの前にstaticが先頭に付く、クラス経由で実行するから特有の値は持たない（ひな形のみ）
-        const quizDataList = await QuizFetcher.fetch();
+        const quizDataList = await QuizFetcher.fetch();//API取得データ
 
-        return quizDataList.results.map(result =>{
+        return quizDataList.results.map(result =>{//配列の生成
             return{//heライブラリ→he.decodeによって特殊文字を読める文字にする
                 question: he.decode(result.question),
                 correctAnswer: he.decode(result.correct_answer),
                 incorrectAnswers: result.incorrect_answers.map(str => he.decode(str))
             };
         })
-        .map(quizData =>{
+        .map(quizData =>{//quizDataListが入ってくる
             return new Quiz(quizData);
         })
     }

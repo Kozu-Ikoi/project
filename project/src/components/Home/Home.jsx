@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';//Reactのコンポーネント、ホームページとボタンの切り替え
 import Button from '../Button/Button';
 
 const Home = ({history})=>{//Route Componentsを使っている、

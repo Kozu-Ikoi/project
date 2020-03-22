@@ -1,4 +1,4 @@
-import Quiz from '../../../src/models/Quiz';
+import Quiz from '../../../src/models/Quiz';//Quiz.jsとリンク、こちらはテストコード
 
 const createMockQuiz = () => {
     return{
@@ -21,9 +21,9 @@ describe('Quizクラスのテスト', ()=>{//jest（テストフレームワー�
         describe('constructor', ()=>{
             it('コンストラクタで渡した値をプロパティに保持する', ()=>{
                 const quizData = createMockQuiz();//クイズのインスタンス作成時のダミーデータ
-                const quiz = new Quiz(quizData);
+                const quiz = new Quiz(quizData);//クイズデータをインスタンスに渡している
 
-                expect(quiz._question).toStrictEqual(quizData.question);
+                expect(quiz._question).toStrictEqual(quizData.question);//インスタンスに渡したデータが入っているかをチェック
                 expect(quiz._correctAnswer).toStrictEqual(quizData.correctAnswer);
                 expect(quiz._incorrectAnswers).toStrictEqual(quizData.incorrectAnswers);
             });
@@ -48,7 +48,7 @@ describe('Quizクラスのテスト', ()=>{//jest（テストフレームワー�
 
             const shuffledAnswers1 = quiz.shuffleAnswers();
             const shuffledAnswers2 = quiz.shuffleAnswers();
-            expect(shuffledAnswers1).not.toStrictEqual(shuffledAnswers2);
+            expect(shuffledAnswers1).not.toStrictEqual(shuffledAnswers2);//イコールじゃない
         });
     });
 

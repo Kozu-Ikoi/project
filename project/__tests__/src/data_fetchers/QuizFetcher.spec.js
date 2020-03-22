@@ -1,4 +1,4 @@
-import QuizFetcher from '../../../src/data_fetchers/QuizFetcher';
+import QuizFetcher from '../../../src/data_fetchers/QuizFetcher';//クイズフェッチャーのテスト
 
 
 describe('QuizFetcherのテスト', ()=>{

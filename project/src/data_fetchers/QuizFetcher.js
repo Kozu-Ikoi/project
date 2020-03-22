@@ -1,4 +1,4 @@
-import axios from 'axios';//APIにアクセスするライブラリ
+import axios from 'axios';//APIにアクセスするライブラリ、API実行のデータ管理
 
 const API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';//Reactのコンポーネント（部品）、Quizページの動作
 import { Link } from 'react-router-dom';// import {モジュール名} from 'ファイルパス'
 import QuizModel from '../../models/Quiz';
 import Button from  '../Button/Button';
@@ -26,7 +26,7 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
             numberOfCorrects: 0//情報のリセット
         });
 
-        const quizzes = await QuizModel.fetchAndCreateQuizzes();
+        const quizzes = await QuizModel.fetchAndCreateQuizzes();//配列である
 
         this.setState({ quizzes });
     }
@@ -62,12 +62,13 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
             return this.renderQuiz();
         }
 
+        //クイズ結果
         if(quizzes.length > 0 && currentIndex >= quizzes.length){
             return this.renderResult();
         }
     }
 
-    renderLoading(){
+    renderLoading(){//読み込み中のメソッド
         return (
             <div>
                 <h1>クイズページ</h1>
@@ -78,15 +79,15 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
         );
     }
 
-    renderQuiz(){
+    renderQuiz(){//出題クイズを実装する
         const {currentIndex, quizzes } = this.state;
 
         const quiz = quizzes[currentIndex];
-        const answers = quiz.shuffleAnswers().map((answer, index) => {
+        const answers = quiz.shuffleAnswers().map((answer, index) => {//シャッフルしたクイズを配列していく
             return (//keyの値を入力しないと警告される
                 <li key={index}>
                     <Button
-                      onClickHandler = {() => {this.selectAnswer(quiz, answer) }}
+                      onClickHandler = {() => {this.selectAnswer(quiz, answer) }}//正解か不正解かを実行する
                     >
                         {answer}
                     </Button>
@@ -94,7 +95,7 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
             );//thisは自分自身の参照→この場合、this===answers
         });//map→新しい配列の生成
 
-        return (
+        return (//クイズの回答一覧、quiz.questionは問題文
             <div>
                 <h1>クイズページ</h1>
                 <div>

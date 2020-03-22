@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react';//ボタンの動作
 import './Button.css';
 
 const Button = (props) => {
-    let { onClickHandler } = props;//let onClickHandler = props.onClickHandler
+    let { onClickHandler } = props;//let onClickHandler = props.onClickHandler←Home.jsx/propsは外からデータを渡せる仕組み
 
     //onClickHandlerに関数以外の値がセットされていたら、
     //ボタンクリック時にエラーを出さないために何も中身のない
