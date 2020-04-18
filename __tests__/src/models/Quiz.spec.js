@@ -79,5 +79,35 @@ describe('Quizクラスのテスト', ()=>{//jest（テストフレームワー�
             });
         });
     });//テスト
+
+    describe('createQuizInstancesWithDataメソッド', ()=>{
+        it('指定された形式でデータを渡すとQuizインスタンスのリストを返す',()=>{
+            const quizFactory = () => {//指定したクイズオブジェクトを新しく作る
+                return{
+                    question: '問題',
+                    correct_answer: '解答',
+                    incorrect_answers: [
+                        '不正解1',
+                        '不正解2',
+                        '不正解3'
+                    ]
+                }
+            };
+
+            const dummyQuizDataList = [//オブジェクトを３つ突っ込む
+                quizFactory(),
+                quizFactory(),
+                quizFactory()
+            ];
+
+            const quizzes = Quiz.createQuizInstancesWithData(dummyQuizDataList);//dummyQuizDataListを引数で渡す
+
+            expect( Array.isArray(quizzes)).toStrictEqual(true);//配列かチェック
+            expect(quizzes.length).toStrictEqual(dummyQuizDataList.length);//３つあるかチェック
+            quizzes.forEach(quiz => {
+                expect( quiz instanceof Quiz).toStrictEqual(true);//quizはそれぞれインスタンスであるかをテスト
+            });
+        });
+    });
  });
 });

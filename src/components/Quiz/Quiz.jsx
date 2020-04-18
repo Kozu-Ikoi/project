@@ -1,34 +1,30 @@
 import React from 'react';//Reactのコンポーネント（部品）、Quizページの動作
 import { Link } from 'react-router-dom';// import {モジュール名} from 'ファイルパス'
-import QuizModel from '../../models/Quiz';
+import { connect } from 'react-redux';//quizコンポーネントと連携する
 import Button from  '../Button/Button';
+import { fetchQuizzes }from '../../actions/quizActionCreator';
 import './Quiz.css';
 
 class Quiz extends React.Component{//クラス→オブジェクト指向
     constructor(props){
         super(props);
 
-        this.state = {
-            quizzes: [],
+        this.state = {//stateのクイズではなく、reduxで管理しているquizReducerのquizzesを使うようにしたいので定義していない
             currentIndex: 0,
             numberOfCorrects: 0
         };
     }
 
-    async componentDidMount(){//renderメソッド実行、DOMを更新後に実行する
-        await this.restart();
+　　 componentDidMount(){//renderメソッド実行、DOMを更新後に実行する
+    　　 this.restart();
     }
 
-    async restart(){
+　　 restart(){
         this.setState({
-            quizzes: [],
             currentIndex: 0,
             numberOfCorrects: 0//情報のリセット
         });
-
-        const quizzes = await QuizModel.fetchAndCreateQuizzes();//配列である
-
-        this.setState({ quizzes });
+        this.props.fetchQuizzes();//props経由でコンテナーから受け取った。このクイズの情報を活用していく
     }
 
     selectAnswer(quiz, answer){
@@ -50,7 +46,8 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
     }
 
     render(){
-        const { quizzes, currentIndex } = this.state;
+        const { quizzes } = this.props.quizInfo;//props経由で受け取ったquizInfoを使う
+        const { currentIndex } = this.state;
         
         //読み込み中
         if( quizzes.length === 0){
@@ -80,8 +77,8 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
     }
 
     renderQuiz(){//出題クイズを実装する
-        const {currentIndex, quizzes } = this.state;
-
+        const {currentIndex } = this.state;
+        const { quizzes } = this.props.quizInfo;//props経由で受け取ったquizInfoを使う
         const quiz = quizzes[currentIndex];
         const answers = quiz.shuffleAnswers().map((answer, index) => {//シャッフルしたクイズを配列していく
             return (//keyの値を入力しないと警告される
@@ -109,7 +106,8 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
     }
 
     renderResult(){
-        const { quizzes, numberOfCorrects } = this.state;
+        const { numberOfCorrects } = this.state;
+        const { quizzes } = this.props.quizInfo;//props経由で受け取ったquizInfoを使う
 
         return (
             <div>
@@ -129,5 +127,28 @@ class Quiz extends React.Component{//クラス→オブジェクト指向
     }
 }
 
+const mapStateToProps = (state) => {
+    return{
+        quizInfo: state.quizInfo,
+    };//quizInfoプロパティで返す
+};
 
-export default Quiz;
+const mapDispatchToProps = {//quizActionCreatorをimportしてきた
+    fetchQuizzes
+};
+
+/*
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        fetchQuizzes: ()=>{
+            dispatch( fetchQuizzes());
+        }
+    }
+}
+
+*/
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Quiz);

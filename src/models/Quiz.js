@@ -32,6 +32,8 @@ class Quiz{
     static async fetchAndCreateQuizzes(){//クラスメソッドの前にstaticが先頭に付く、クラス経由で実行するから特有の値は持たない（ひな形のみ）
         const quizDataList = await QuizFetcher.fetch();//API取得データ
 
+       return Quiz.createQuizInstancesWithData(quizDataList.results);
+        /*
         return quizDataList.results.map(result =>{//配列の生成
             return{//heライブラリ→he.decodeによって特殊文字を読める文字にする
                 question: he.decode(result.question),
@@ -40,6 +42,20 @@ class Quiz{
             };
         })
         .map(quizData =>{//quizDataListが入ってくる
+            return new Quiz(quizData);
+        })
+        */
+    }
+
+    static createQuizInstancesWithData(quizDataList){//引数経由でクイズデータを受け取っている
+        return quizDataList.map(quizData => {
+            return{
+            question: he.decode(quizData.question),
+            correctAnswer: he.decode(quizData.correct_answer),
+            incorrectAnswers: quizData.incorrect_answers.map(str => he.decode(str))
+         };
+        })
+        .map(quizData => {//クイズインスタンスに格納する
             return new Quiz(quizData);
         })
     }
